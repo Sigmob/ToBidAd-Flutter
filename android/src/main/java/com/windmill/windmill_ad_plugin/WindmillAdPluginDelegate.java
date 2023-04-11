@@ -107,7 +107,6 @@ public class WindmillAdPluginDelegate implements MethodChannel.MethodCallHandler
                     @Override
                     public boolean isCanUseAndroidId() {
                         return isCanUseAndroidId == null?true:isCanUseAndroidId;
-
                      }
 
                     @Override
@@ -258,7 +257,5 @@ public class WindmillAdPluginDelegate implements MethodChannel.MethodCallHandler
 
         result.success(null);
     }
-
-
 
 }
