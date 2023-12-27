@@ -1,5 +1,7 @@
 package com.windmill.windmill_ad_plugin.feedAd;
 
+import com.windmill.windmill_ad_plugin.utils.ResourceUtil;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -26,8 +28,8 @@ class ViewConfigItem {
 
         try {
             int x = config.getInt("x");
-            if (!userPixel()){
-               x = (int)ResourceUtil.Instace().dip2Px(x);
+            if (!userPixel()) {
+                x = (int) ResourceUtil.Instance().dip2Px(x);
             }
             return x;
         } catch (JSONException e) {
@@ -39,8 +41,8 @@ class ViewConfigItem {
     public int getY() {
         try {
             int y = config.getInt("y");
-            if (!userPixel()){
-                y = (int)ResourceUtil.Instace().dip2Px(y);
+            if (!userPixel()) {
+                y = (int) ResourceUtil.Instance().dip2Px(y);
             }
             return y;
         } catch (JSONException e) {
@@ -53,8 +55,8 @@ class ViewConfigItem {
     public int getWidth() {
         try {
             int width = config.getInt("width");
-            if (!userPixel()){
-                width = (int)ResourceUtil.Instace().dip2Px(width);
+            if (!userPixel()) {
+                width = (int) ResourceUtil.Instance().dip2Px(width);
             }
             return width;
         } catch (JSONException e) {
@@ -66,8 +68,8 @@ class ViewConfigItem {
     public int getHeight() {
         try {
             int height = config.getInt("height");
-            if (!userPixel()){
-                height = (int)ResourceUtil.Instace().dip2Px(height);
+            if (!userPixel()) {
+                height = (int) ResourceUtil.Instance().dip2Px(height);
             }
             return height;
         } catch (JSONException e) {
