@@ -35,6 +35,14 @@ class WindmillAd {
         {'customGroup': json.encode(customGroup), 'placementId': placementId});
   }
 
+  static Future<void> setFilterNetworkFirmIdList(
+      String? placementId, List<String> networkFirmIdList) {
+    return _channel.invokeMethod('setFilterNetworkFirmIdList', {
+      'placementId': placementId ?? "",
+      'networkFirmIdList': networkFirmIdList
+    });
+  }
+
   static Future<void> setCustomDevice(CustomDevice customDevice) {
     return _channel.invokeMethod('customDevice', {
       'isCanUseAppList': customDevice.isCanUseAppList,
@@ -78,8 +86,12 @@ class WindmillAd {
     return _channel.invokeMethod('setSupportMultiProcess', {'flags': flags});
   }
 
-  static Future<void> setWxOpenAppId(String? wxAppId) {
-    return _channel.invokeMethod('setWxOpenAppId', {'wxAppId': wxAppId ?? ""});
+  static Future<void> setWxOpenAppIdAndUniversalLink(
+      String? wxAppId, String? universalLink) {
+    return _channel.invokeMethod('setWxOpenAppIdAndUniversalLink', {
+      'wxAppId': wxAppId ?? "",
+      'universalLink': universalLink ?? "",
+    });
   }
 
   static Future<void> gdpr(GDPR state) {
