@@ -51,10 +51,8 @@ class WindmillSplashAd with WindmillEventHandler{
     return adSize;
   }
 
-  Future<bool> isReady() async {
-    bool isReady = await _channel.invokeMethod('isReady', {
-      "uniqId": _uniqId
-    });
+  Future<bool?> isReady() async {
+    bool? isReady = await _channel.invokeMethod('isReady', {"uniqId": _uniqId});
     return isReady;
   }
 
@@ -101,14 +99,14 @@ class WindmillSplashAd with WindmillEventHandler{
    
     return null;
   }
-  Future<AdInfo> getAdInfo() async {
-    String adinfoStr = await _channel.invokeMethod("getAdInfo",{
-      "uniqId":_uniqId 
-    });
-    final adInfoJson = json.decode(adinfoStr);
-    return AdInfo.fromJson(adInfoJson); 
-  }
   
+  Future<AdInfo?> getAdInfo() async {
+    String? adInfoStr =
+        await _channel.invokeMethod("getAdInfo", {"uniqId": _uniqId});
+    if (adInfoStr == null) return null;
+    final adInfoJson = json.decode(adInfoStr);
+    return AdInfo.fromJson(adInfoJson);
+  }
 
   Future<void> destroy() async {
     await _channel.invokeMethod('destroy', {
