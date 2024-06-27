@@ -102,6 +102,22 @@ class WindmillAd {
     return _channel.invokeMethod('setUserId', {'userId': userId ?? ""});
   }
 
+  static Future<void> addFilter(String? placementId, List<WindmillFilterInfo>? filterInfoList) {
+
+    if (filterInfoList == null) {
+      return Future.value();
+    }
+
+    List<Map<String, dynamic>> filterInfoListMap = [];
+
+    for (WindmillFilterInfo filterInfo in filterInfoList) {
+      filterInfoListMap.add(filterInfo.toJson());
+    }
+
+    return _channel.invokeMethod('addFilter',
+        {'placementId': placementId ?? "", 'filterInfoList': filterInfoListMap});
+  }
+
   static Future<void> networkPreInit(
       List<WindmillNetworkInfo>? networkInfoList) {
     if (networkInfoList == null) {
