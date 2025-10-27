@@ -2,8 +2,13 @@ package com.windmill.windmill_ad_plugin.splashAd;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 
+import static com.windmill.windmill_ad_plugin.WindmillAdPlugin.kWindmillEventOnNetworkInitBefore;
+
 import android.app.Activity;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -11,6 +16,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 
+import com.windmill.sdk.WMAdFilter;
 import com.windmill.sdk.WindMillAdRequest;
 import com.windmill.sdk.WindMillError;
 
@@ -23,6 +29,7 @@ import com.windmill.windmill_ad_plugin.WindmillAdPlugin;
 import com.windmill.windmill_ad_plugin.core.IWMAdSourceStatus;
 import com.windmill.windmill_ad_plugin.core.WindmillAd;
 import com.windmill.windmill_ad_plugin.core.WindmillBaseAd;
+import com.windmill.windmill_ad_plugin.utils.WindmillUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -160,6 +167,21 @@ public class SplashAd extends WindmillBaseAd implements MethodChannel.MethodCall
         return this.splashAdView.isReady();
     }
 
+    public Object setCustomGroup(MethodCall call) {
+        HashMap<String, String> customGroup =  call.argument("customGroup");
+        this.splashAdView.setCustomGroup(customGroup);
+        return null;
+    }
+
+    public Object addFilter(MethodCall call) {
+        ArrayList<HashMap<String, Object>> list = call.argument("modelList");
+        WMAdFilter filter = WindmillUtils.getCurrentFilter(list);
+        if (filter != null) {
+            this.splashAdView.setFilter(filter);
+        }
+        return null;
+    }
+
     public Object destroy(MethodCall call) {
         if (this.adChannel != null) {
             this.adChannel.setMethodCallHandler(null);
@@ -185,8 +207,22 @@ class IWMSplashAdListener implements WMSplashAdListener {
     @Override
     public void onSplashAdSuccessPresent(final AdInfo adInfo) {
         this.splashAd.adInfo = adInfo;
-        channel.invokeMethod(WindmillAdPlugin.kWindmillEventAdOpened, null);
+        Handler mainHandler = new Handler(Looper.getMainLooper());
+        mainHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                channel.invokeMethod(WindmillAdPlugin.kWindmillEventAdOpened, null);
+            }
+        });
 
+    }
+
+    @Override
+    public void onSplashAdFailToPresent(WindMillError error, String placementId) {
+        Map<String, Object> args = new HashMap<String, Object>();
+        args.put("code", error.getErrorCode());
+        args.put("message", error.getMessage());
+        channel.invokeMethod(WindmillAdPlugin.kWindmillEventAdRenderFail, null);
     }
 
     @Override

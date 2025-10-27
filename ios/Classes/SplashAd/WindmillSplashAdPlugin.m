@@ -213,6 +213,16 @@ static NSMutableDictionary<NSString *, WindmillSplashAdPlugin *> *pluginMap;
     
 }
 
+- (void)setCustomGroupMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {
+    NSDictionary *arguments = call.arguments;
+    if (![WindmillUtil isValidDic:arguments]) return;
+    NSDictionary *customGroup = [arguments objectForKey:@"customGroup"];
+    if ([WindmillUtil isValidDic:customGroup]) {
+        [_splashView setLoadCustomGroup:customGroup];
+    }
+    result(nil);
+}
+
 
 #pragma mark - WindMillSplashAdDelegate
 
